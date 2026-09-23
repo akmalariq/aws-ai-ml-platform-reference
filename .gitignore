@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+uv.lock
+dist/
+build/
+*.egg-info/
+data/
+output/
+models/
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+.build/
