@@ -14,13 +14,15 @@ locals {
 # ---------------------------------------------------------------------------
 
 resource "aws_s3_bucket" "lakehouse" {
-  bucket = var.lakehouse_bucket
-  tags   = local.tags
+  bucket        = var.lakehouse_bucket
+  force_destroy = true
+  tags          = local.tags
 }
 
 resource "aws_s3_bucket" "artifacts" {
-  bucket = var.artifacts_bucket
-  tags   = local.tags
+  bucket        = var.artifacts_bucket
+  force_destroy = true
+  tags          = local.tags
 }
 
 resource "aws_s3_bucket_versioning" "lakehouse" {

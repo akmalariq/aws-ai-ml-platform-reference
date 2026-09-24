@@ -25,6 +25,7 @@ def settings(tmp_path: Path) -> Settings:
     return Settings(
         use_aws=False,
         region="ap-southeast-3",
+        bedrock_region="ap-southeast-3",
         bucket="awsml-lakehouse-test",
         local_root=tmp_path,
         model_name="demand-forecast",

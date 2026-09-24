@@ -63,7 +63,7 @@ def _bedrock_generate(prompt: str, settings: Settings) -> str:
     import boto3
 
     model_id = os.environ["AWSML_BEDROCK_MODEL_ID"]
-    client = boto3.client("bedrock-runtime", region_name=settings.region)
+    client = boto3.client("bedrock-runtime", region_name=settings.bedrock_region)
     body = json.dumps(
         {
             "inputText": prompt,

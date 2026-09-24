@@ -27,15 +27,18 @@ class Settings:
 
     use_aws: bool
     region: str
+    bedrock_region: str
     bucket: str
     local_root: Path
     model_name: str
 
     @classmethod
     def from_env(cls) -> "Settings":
+        region = os.getenv("AWS_REGION", os.getenv("AWS_DEFAULT_REGION", "ap-southeast-3"))
         return cls(
             use_aws=_env_flag("AWSML_USE_AWS", False),
-            region=os.getenv("AWS_REGION", os.getenv("AWS_DEFAULT_REGION", "ap-southeast-3")),
+            region=region,
+            bedrock_region=os.getenv("AWSML_BEDROCK_REGION", region),
             bucket=os.getenv("AWSML_BUCKET", "awsml-lakehouse-dev"),
             local_root=Path(os.getenv("AWSML_LOCAL_ROOT", PROJECT_ROOT / "output")),
             model_name=os.getenv("AWSML_MODEL_NAME", "demand-forecast"),

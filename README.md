@@ -111,6 +111,10 @@ Honest boundaries, so nothing here overstates:
 - **Not included:** MWAA scheduling, SageMaker Pipelines, and a real Bedrock
   model call are described and wired but need an AWS account and model access to
   run.
+- **RAG detail:** the retriever is TF-IDF in both modes; on AWS only the
+  generation step switches to Bedrock. Amazon Titan embeddings are described in
+  the design but not implemented, so the "embeddings with Titan" pattern is the
+  next step, not current behaviour.
 
 ## Tests
 
