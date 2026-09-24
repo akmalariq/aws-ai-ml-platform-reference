@@ -22,7 +22,7 @@ switches to real AWS services when credentials are present.
 | AWS lake house | `lakehouse.py`, `sql/athena_ddl.sql`, `infra/terraform` | Parquet in S3, Glue catalog DDL, Athena workgroup |
 | AI apps and visualization | `streamlit_app.py`, `serve.py` | Interactive app plus the FastAPI contract it calls |
 | Software engineering and deployment | `serve.py`, `Dockerfile`, `.github/workflows/ci.yml`, `infra/terraform` | API, container, CI/CD, Lambda and API Gateway |
-| Generative AI and NLP | `rag.py`, `docs/knowledge.md` | Retrieval over a corpus, Amazon Titan and Bedrock on AWS, TF-IDF and extractive locally |
+| Generative AI and NLP | `rag.py`, `docs/knowledge.md` | Retrieval over a corpus, Amazon Bedrock on AWS (Nova via inference profile), TF-IDF and extractive locally |
 | Business collaboration and strategy | `README.md`, `docs/knowledge.md` | The roadmap, the architecture, and the written rationale |
 
 ## Run it locally
@@ -60,7 +60,7 @@ export AWSML_USE_AWS=true
 export AWSML_BUCKET=<lakehouse-bucket>
 export AWS_REGION=ap-southeast-3
 # optional, for the Bedrock path
-export AWSML_BEDROCK_MODEL_ID=amazon.titan-text-lite-v1
+export AWSML_BEDROCK_MODEL_ID=us.amazon.nova-lite-v1:0   # inference profile id; on-demand Nova requires one
 
 cd infra/terraform
 terraform init

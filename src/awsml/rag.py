@@ -5,17 +5,18 @@ foundation model to answer using them.
 
 Two backends, same interface:
 
-- **AWS**: Amazon Titan embeddings plus a model in Amazon Bedrock.
+- **AWS**: retrieval over the corpus, then generation with a model in Amazon
+  Bedrock via the Converse API. Converse is model-agnostic, so Amazon Nova,
+  Anthropic Claude, or another provider works by changing the model id.
 - **Local**: a TF-IDF retriever and an extractive answer, so the endpoint works
   and is testable with no cloud account.
 
-This mirrors the JD's "prompt engineering, embeddings with Amazon Titan, and
-retrieval-augmented generation (RAG) on AWS".
+The retriever is TF-IDF in both modes; Amazon Titan embeddings are the design
+target and are not implemented yet.
 """
 
 from __future__ import annotations
 
-import json
 import os
 from pathlib import Path
 
@@ -59,20 +60,22 @@ class Retriever:
 
 
 def _bedrock_generate(prompt: str, settings: Settings) -> str:
-    """Call a Bedrock foundation model. Requires AWS credentials and model access."""
+    """Call a Bedrock foundation model with the Converse API.
+
+    Converse is model-agnostic, so the same call works across Amazon Nova,
+    Anthropic Claude, and other providers without per-model request bodies.
+    Requires AWS credentials and model access.
+    """
     import boto3
 
     model_id = os.environ["AWSML_BEDROCK_MODEL_ID"]
     client = boto3.client("bedrock-runtime", region_name=settings.bedrock_region)
-    body = json.dumps(
-        {
-            "inputText": prompt,
-            "textGenerationConfig": {"maxTokenCount": 512, "temperature": 0.2},
-        }
+    response = client.converse(
+        modelId=model_id,
+        messages=[{"role": "user", "content": [{"text": prompt}]}],
+        inferenceConfig={"maxTokens": 512, "temperature": 0.2},
     )
-    response = client.invoke_model(modelId=model_id, body=body)
-    payload = json.loads(response["body"].read())
-    return payload["results"][0]["outputText"].strip()
+    return response["output"]["message"]["content"][0]["text"].strip()
 
 
 def answer(question: str, settings: Settings, top_k: int = 3) -> dict:

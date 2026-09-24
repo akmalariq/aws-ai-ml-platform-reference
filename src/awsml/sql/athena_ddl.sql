@@ -14,8 +14,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS awsml.demand (
   store INT,
   event_date DATE,
   units INT,
-  promo INT,
-  is_weekend INT
+  promo INT
 )
 STORED AS PARQUET
 LOCATION 's3://<bucket>/lakehouse/demand/'

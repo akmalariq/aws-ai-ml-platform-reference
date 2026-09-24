@@ -33,11 +33,13 @@ CodePipeline, CodeBuild, Terraform, and GitHub Actions.
 
 ## Retrieval-augmented generation
 
-The RAG endpoint embeds the corpus, retrieves the passages most relevant to a
-question, and passes them to a foundation model as context. On AWS the embeddings
-come from Amazon Titan and the generation from a model in Amazon Bedrock. The
-same code falls back to a local TF-IDF retriever and an extractive answer when
-no AWS credentials are present, so the behavior is testable offline.
+The RAG endpoint retrieves the passages most relevant to a question and passes
+them to a foundation model as context. On AWS the generation runs through Amazon
+Bedrock via the Converse API, for example Amazon Nova through an inference
+profile. Retrieval is TF-IDF in both modes; Amazon Titan embeddings are the
+intended next step, not current behaviour. The same code falls back to a local
+extractive answer when no AWS credentials are present, so the behavior is
+testable offline.
 
 ## Monitoring and MLOps
 
